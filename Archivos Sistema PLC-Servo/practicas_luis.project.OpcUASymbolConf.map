@@ -1,0 +1,16 @@
+GUID['A'] = '429343C4000000000000000000000000';
+var availableVariables = [
+['POU.IN0','b','A;1;4;1761;8'],
+['POU.IN1','b','A;1;4;1762;8'],
+['POU.VEL','I','A;4;4;3180;8'],
+['POU.IN2','b','A;1;4;1763;8'],
+['POU.leeparam','b','A;1;4;3408;8'],
+['POU.Ana2','i','A;2;4;3410;8'],
+['POU.homing','b','A;1;4;3409;8'],
+['POU.moveabs','b','A;1;4;3840;8'],
+['POU.moverel','b','A;1;4;3841;8'],
+['IoConfig_Globals_Mapping.iwDI_IW0 (%IW0)','w','A;2;1;0;2'],
+['IoConfig_Globals_Mapping.ibDI_IB1 (%IB2)','B','A;1;1;2;2'],
+['IoConfig_Globals_Mapping.qwDQ_QW0 (%QW0)','w','A;2;2;0;8'],
+['IoConfig_Globals_Mapping.qbDQ_QB1 (%QB2)','B','A;1;2;2;8']
+];

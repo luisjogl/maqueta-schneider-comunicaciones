@@ -1,0 +1,10 @@
+variables globales:
+	dv_true y dv_false
+	root, objects, m241
+
+
+
+anotaciones:
+comprobar si es necesario esperar para poner a false cuando se hace enable reset
+ver como crear menu
+organizar codigo por clases (constructor establece conexion, destructor desconecta, atributos son variables y get y set como metodos)
