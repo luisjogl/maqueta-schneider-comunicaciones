@@ -2,15 +2,27 @@ from opcua import Client
 from opcua import ua
 
 
-class MC_Power_LXM:
+class M241:
     def __init__(self):
-        self.enable = m241.get_child(['2:POU.IN0'])
+        self.client = Client("opc.tcp://10.0.0.51:4840")
+        self.client.connect()                                         # conecta el objeto cliente
+        self.root = self.client.get_root_node()                             # navegacion a traves del arbol de objetos
+        self.objects = self.root.get_child(['0:Objects'])
+        self.m241 = self.objects.get_child(['2:M241-M251 data'])
+
+    def __del__(self):
+        self.client.disconnect()
+
+class MC_Power_LXM(M241):
+    def __init__(self):
+        M241.__init__(self)
+        self.enable = self.m241.get_child(['2:POU.IN0'])
 
     def get_enable(self):
-        enable.get_value()
+        print(self.enable.get_value())
 
     def set_enable(self, bool_value):
-        enable.set_value(ua.DataValue(ua.Variant(bool_value,ua.VariantType.Boolean)))
+        self.enable.set_value(ua.DataValue(ua.Variant(bool_value,ua.VariantType.Boolean)))
 
 
 class MC_Reset_LXM:
