@@ -1,7 +1,9 @@
 from opcua import Client
 from opcua import ua
 import time
-import .\..\modulos_LXM
+import sys
+sys.path.append("D:\MAIIND\Comunicaciones industriales\maqueta-schneider-comunicaciones-unit-tests-modulos\")
+from modulos_LXM import *
 
 client = Client("opc.tcp://10.0.0.51:4840")              # construye un objeto cliente OPC UA para un servidor
 try:
