@@ -30,7 +30,7 @@ class MC_Reset_LXM(M241):
 
     def __init__(self):
         M241.__init__(self)
-        self.execute = m241.get_child(['2:POU.IN2'])
+        self.execute = self.m241.get_child(['2:POU.IN2'])
 
     def get_execute(self):
         self.execute.get_value()
@@ -43,7 +43,7 @@ class MC_Stop_LXM(M241):
 
     def __init__(self):
         M241.__init__(self)
-        self.execute = m241.get_child(['2:POU.IN3'])
+        self.execute = self.m241.get_child(['2:POU.IN3'])
 
     def get_execute(self):
         self.execute.get_value()
@@ -56,8 +56,8 @@ class MC_ReadParameter_LXM(M241):
 
     def __init__(self):
         M241.__init__(self)
-        self.enable = m241.get_child(['2:POU.leeparam'])
-        self.value = m241.get_child(['2:POU.Ana2'])
+        self.enable = self.m241.get_child(['2:POU.leeparam'])
+        self.value = self.m241.get_child(['2:POU.Ana2'])
 
     def get_enable(self):
         self.enable.get_value()
@@ -73,8 +73,8 @@ class MC_Home_LXM(M241):
 
     def __init__(self):
         M241.__init__(self)
-        self.execute = m241.get_child(['2:POU.homing'])
-        self.position = m241.get_child(['2:POU.home_position']) #TODO:crear variable en SoMachine
+        self.execute = self.m241.get_child(['2:POU.homing'])
+        self.position = self.m241.get_child(['2:POU.home_position']) #TODO:crear variable en SoMachine
         self.position.set_home_position(0)
 
     def get_execute(self):
@@ -94,10 +94,10 @@ class MC_MoveAbsolute_LXM(M241):
 
     def __init__(self):
         M241.__init__(self)
-        self.execute = m241.get_child(['2:POU.moveabs'])
-        self.position = m241.get_child(['2:POU.target_position']) #TODO:crear variable en SoMachine
+        self.execute = self.m241.get_child(['2:POU.moveabs'])
+        self.position = self.m241.get_child(['2:POU.target_position']) #TODO:crear variable en SoMachine
         position.set_target_position(0)
-        self.velocity = m241.get_child(['2:POU.abs_velocity']) #TODO:crear variable en SoMachine
+        self.velocity = self.m241.get_child(['2:POU.abs_velocity']) #TODO:crear variable en SoMachine
 
     def get_execute(self):
         self.execute.get_value()
@@ -122,9 +122,9 @@ class MC_MoveRelative_LXM(M241):
 
     def __init__(self):
         M241.__init__(self)
-        self.execute = m241.get_child(['2:POU.moverel'])
-        self.distance = m241.get_child(['2:POU.target_distance']) #TODO:crear variable en SoMachine
-        self.velocity = m241.get_child(['2:POU.rel_velocity']) #TODO:crear variable en SoMachine
+        self.execute = self.m241.get_child(['2:POU.moverel'])
+        self.distance = self.m241.get_child(['2:POU.target_distance']) #TODO:crear variable en SoMachine
+        self.velocity = self.m241.get_child(['2:POU.rel_velocity']) #TODO:crear variable en SoMachine
 
     def get_execute(self):
         self.execute.get_value()
@@ -149,8 +149,8 @@ class MC_MoveRelative_LXM(M241):
 class MC_ReadActualPosition_LXM(M241):
     def __init__(self):
         M241.__init__(self)
-        self.enable = m241.get_child(['2:POU.leeposicion']) #TODO:crear variable en SoMachine
-        self.position = m241.get_child(['2:POU.posicionactual']) #TODO:crear variable en SoMachine
+        self.enable = self.m241.get_child(['2:POU.leeposicion']) #TODO:crear variable en SoMachine
+        self.position = self.m241.get_child(['2:POU.posicionactual']) #TODO:crear variable en SoMachine
 
     def get_enable(self):
         self.enable.get_value()
@@ -165,8 +165,8 @@ class MC_ReadActualPosition_LXM(M241):
 class MC_ReadActualVelocity_LXM(M241):
     def __init__(self):
         M241.__init__(self)
-        self.enable = m241.get_child(['2:POU.leeposicion']) #TODO:crear variable en SoMachine
-        self.velocity = m241.get_child(['2:POU.velocidadactual']) #TODO:crear variable en SoMachine
+        self.enable = self.m241.get_child(['2:POU.leeposicion']) #TODO:crear variable en SoMachine
+        self.velocity = self.m241.get_child(['2:POU.velocidadactual']) #TODO:crear variable en SoMachine
 
     def get_enable(self):
         self.enable.get_value()
