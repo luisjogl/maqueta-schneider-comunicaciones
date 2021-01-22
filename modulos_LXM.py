@@ -1,3 +1,7 @@
+from opcua import Client
+from opcua import ua
+
+
 class MC_Power_LXM:
     def __init__(self):
         self.enable = m241.get_child(['2:POU.IN0'])
