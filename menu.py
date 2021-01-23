@@ -1,6 +1,8 @@
+import funcionalidades
+
 def menu():
 
-    #mensajes_pantalla()
+    mensajes_pantallaPrincipal()
     seleccion = int(raw_input("Seleccione operación a realizar: \n"))
 
     while seleccion != 0:
@@ -11,7 +13,7 @@ def menu():
         else:
             print("Selección inválida, escoja operación de nuevo. \n")
 
-        #mensajes_pantalla()
+        mensajes_pantallaPrincipal()
         seleccion = int(raw_input("Seleccione operación a realizar: \n"))
 
     print("Ha decidido salir de la aplicación. Adiós! \n")

@@ -5,7 +5,7 @@ def dv_DINT(value):
     return ua.DataValue(ua.Variant([value], ua.VariantType.Int32)))
 
 def get_POU_variables(controller):
-    global enable_reset = controller.get_child(['2:POU.Enable_Reset'])
+    global execute_reset = controller.get_child(['2:POU.Execute_Reset'])
     global enable_power = controller.get_child(['2:POU.Enable_Power'])
     global execute_moveVel = controller.get_child(['2:POU.Execute_MoveVel'])
     global velocity_moveVel = controller.get_child(['2:POU.VEL'])
