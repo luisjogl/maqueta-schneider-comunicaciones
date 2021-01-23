@@ -1,5 +1,6 @@
 from opcua import Client
 from opcua import ua
+import time
 
 client = Client("opc.tcp://10.0.0.51:4840")              # construye un objeto cliente OPC UA para un servidor
 try:
@@ -38,11 +39,14 @@ try:
 
     print("Enable POWER?")
     print(enable_power.get_value())
+    time.sleep(3)
+
 
     print("Haciendo moverse al motor")
     move.set_value(dv_true)
     print("Motor moviendose?")
     print(move.get_value())
+    time.sleep(3)
     #var.set_value(dv)                                  # escritura en variable del aut�mata
 
 finally:
