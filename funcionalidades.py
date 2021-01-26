@@ -2,7 +2,6 @@ from opcua import Client
 from opcua import ua
 import time
 
-
 def encender():
     try:
         if enable_power.get_value() != dv_BOOL(True): #hay que comprobar si es dv_BOOL(False) o directamente False
@@ -39,20 +38,24 @@ def apagar():
 def posicion_actual():
     if leePosicion.get_value() != dv_BOOL(False): #hay que comprobar si es dv_BOOL(False) o directamente False
         posicion = posicionActual.get_value()
-        print(posicion)
+        print(posicion / 16384)
+        #añadir return y crear popup que lo muestre en HMI
     else:
         leePosicion.set_value(dv_BOOL(True))
         posicion = posicionActual.get_value()
-        print(posicion)
+        print(posicion / 16384)
+        #añadir return y crear popup que lo muestre en HMI
 
 def velocidad_actual():
     if leeVelocidad.get_value() != dv_BOOL(False): #hay que comprobar si es dv_BOOL(False) o directamente False
         velocidad = velocidadActual.get_value()
         print(velocidad)
+        #añadir return y crear popup que lo muestre en HMI
     else:
         leeVelocidad.set_value(dv_BOOL(True))
         velocidad = velocidadActual.get_value()
         print(velocidad)
+        #añadir return y crear popup que lo muestre en HMI
 
 def movimiento_cte(vel): #mover a velocidad constante
     try:
@@ -66,7 +69,8 @@ def movimiento_cte(vel): #mover a velocidad constante
         velocity_moveVel.set_value(dv_DINT(vel))
         execute_moveVel.set_value(dv_BOOL(True))
 
-def movimiento_relativo(dist, vel):
+def movimiento_relativo(vueltas, vel):
+    dist = vueltas * 16384 # 1 vuelta = 16384
     try:
         distancia.set_value(dv_DINT(dist))
         velocidad.set_value(dv_DINT(vel))
@@ -103,3 +107,12 @@ def parar():
         time.sleep(0.5)
         execute_reset.set_value(dv_BOOL(False))
         execute_stop.set_value(dv_BOOL(True))
+
+def resetear():
+    try:
+        execute_reset.set_value(dv_BOOL(True))
+        time.sleep(0.5)
+        execute_reset.set_value(dv_BOOL(False))
+
+    except error_Reset.get_value() == dv_BOOL(True):
+        print("Ha habido un error al resetear")

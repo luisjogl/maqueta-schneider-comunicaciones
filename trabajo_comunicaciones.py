@@ -14,7 +14,7 @@ def main():
         objects = root.get_child(['0:Objects'])
         m241 = objects.get_child(['2:M241-M251 data'])
         variables.get_POU_variables(m241)
-        menu()
+        MainWindow.show()
 
     finally:
         print("Desconectando")
@@ -22,4 +22,12 @@ def main():
 
 
 if __name__ == '__main__':
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
     main()
+    
+    sys.exit(app.exec_())
+
