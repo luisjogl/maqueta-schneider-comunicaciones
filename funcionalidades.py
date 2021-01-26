@@ -1,6 +1,7 @@
 from opcua import Client
 from opcua import ua
 import time
+from variables import Variables as var
 
 def encender():
     try:

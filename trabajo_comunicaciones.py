@@ -1,8 +1,10 @@
 from opcua import Client
 from opcua import ua
 import time
-import variables
-from menu import menu
+from variables import Variables
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QMessageBox, QInputDialog, QLineEdit, QWidget
+from HMI import Ui_MainWindow
 
 def main():
     # Establece conexion y define variables empleadas
@@ -13,7 +15,6 @@ def main():
         root = client.get_root_node()                             # navegacion a traves del arbol de objetos
         objects = root.get_child(['0:Objects'])
         m241 = objects.get_child(['2:M241-M251 data'])
-        variables.get_POU_variables(m241)
         MainWindow.show()
 
     finally:
