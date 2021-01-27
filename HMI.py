@@ -85,7 +85,7 @@ class Ui_MainWindow(object):
 
         self.botonParar.clicked.connect(self.func_parar)
         #self.botonEncender.clicked.connect(self.func_encender)
-        self.botonEncender.clicked.connect(POU.encender())
+        #self.botonEncender.clicked.connect(POU.encender())
         self.botonApagar.clicked.connect(self.func_apagar)
         self.botonVelocidad.clicked.connect(self.func_leeVel)
         self.botonPosicion.clicked.connect(self.func_leePos)
