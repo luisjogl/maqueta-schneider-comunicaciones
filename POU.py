@@ -27,7 +27,9 @@ class POU():
         self.error_setHome = controller.get_child(['2:POU.error_setHome'])
         self.error_moveRelativo = controller.get_child(['2:POU.error_moveRelativo'])
         self.error_moveAbsoluto = controller.get_child(['2:POU.error_moveAbsolute'])
-        
+        self.doneRel = controller.get_child(['2:POU.doneRel'])
+        self.doneAbs = controller.get_child(['2:POU.doneAbs'])
+
     def dv_BOOL(self, bool_value):
         return ua.DataValue(ua.Variant(bool_value,ua.VariantType.Boolean))
 
@@ -69,24 +71,24 @@ class POU():
     def posicion_actual(self):
         if self.leePosicion.get_value() != self.dv_BOOL(False): #hay que comprobar si es dv_BOOL(False) o directamente False
             self.posicion = self.posicionActual.get_value()
-            print((self.posicion / 16384) / 360)
-            print(self.posicion)
+            print("La posición actual es {}".format(self.posicion))
+            return self.posicion
             #añadir return y crear popup que lo muestre en HMI
         else:
             self.leePosicion.set_value(self.dv_BOOL(True))
             self.posicion = self.posicionActual.get_value()
-            print(self.posicion / 16384)
-            #añadir return y crear popup que lo muestre en HMI
+            print("La posición actual es {}".format(self.posicion))
+            return self.posicion
 
     def velocidad_actual(self):
         if self.leeVelocidad.get_value() != self.dv_BOOL(False): #hay que comprobar si es dv_BOOL(False) o directamente False
             self.velocidad = self.velocidadActual.get_value()
-            print(self.velocidad)
+            return self.velocidad
             #añadir return y crear popup que lo muestre en HMI
         else:
             self.leeVelocidad.set_value(self.dv_BOOL(True))
             self.velocidad = self.velocidadActual.get_value()
-            print(self.velocidad)
+            return self.velocidad
             #añadir return y crear popup que lo muestre en HMI
 
     def movimiento_cte(self, vel): #mover a velocidad constante
@@ -101,16 +103,20 @@ class POU():
             self.velocity_moveVel.set_value(self.dv_DINT(vel))
             self.execute_moveVel.set_value(self.dv_BOOL(True))
 
-    def movimiento_relativo(self, vueltas, vel):
-        dist = vueltas * 16384 # 1 vuelta = 16384
+    def movimiento_relativo(self, obj, vel, modo):
+        if modo == 0:
+            dist = int(obj * 16384) # 1 vuelta = 16384
+        else:
+            dist = int(obj / 360 * 16384)
         try:
             self.distancia.set_value(self.dv_DINT(dist))
-            self.velocidad = vel
+            self.velocidad.set_value(self.dv_DINT(vel))
             #self.velocidad.set_value(self.dv_DINT(vel))
             self.execute_moveRel.set_value(self.dv_BOOL(True))
             time.sleep(0.5)
 
         except self.error_moveRelativo.get_value() == self.dv_BOOL(True): #hay que comprobar si es dv_BOOL(False) o directamente False
+            self.execute_moveRel.set_value(self.dv_BOOL(False))
             self.execute_reset.set_value(self.dv_BOOL(True))
             time.sleep(0.5)
             self.execute_reset.set_value(self.dv_BOOL(False))
@@ -121,7 +127,7 @@ class POU():
 
     def movimiento_absoluto(self, pos_obj, vel): #mover hasta pos elegida(posicion_objetivo) a una velocidad
         try:
-            self.posicion_objetivo.set_value(self.dv_DINT(pos_obj))
+            self.posicion_objetivo.set_value(self.dv_DINT(int(pos_obj)))
             self.velocidad.set_value(self.dv_DINT(vel))
             self.execute_moveAbs.set_value(self.dv_BOOL(True))
 
@@ -131,12 +137,14 @@ class POU():
             self.execute_reset.set_value(self.dv_BOOL(False))
             self.posicion_objetivo.set_value(self.dv_DINT(pos_obj))
             self.velocidad.set_value(self.dv_DINT(vel))
-            execute_moveAbs.set_value(dv_BOOL(True))
+            self.execute_moveAbs.set_value(dv_BOOL(True))
 
     def parar(self):
         try:
             self.execute_stop.set_value(self.dv_BOOL(True))
             self.execute_moveVel.set_value(self.dv_BOOL(False))
+            self.execute_moveAbs.set_value(self.dv_BOOL(False))
+            self.execute_moveRel.set_value(self.dv_BOOL(False))
             time.sleep(0.5)
             self.execute_stop.set_value(self.dv_BOOL(False))
 
@@ -146,12 +154,17 @@ class POU():
             self.execute_reset.set_value(self.dv_BOOL(False))
             self.execute_stop.set_value(self.dv_BOOL(True))
             self.execute_moveVel.set_value(self.dv_BOOL(False))
+            self.execute_moveAbs.set_value(self.dv_BOOL(False))
+            self.execute_moveRel.set_value(self.dv_BOOL(False))
             time.sleep(0.5)
             self.execute_stop.set_value(self.dv_BOOL(False))
 
     def resetear(self):
         try:
             self.execute_reset.set_value(self.dv_BOOL(True))
+            self.execute_moveVel.set_value(self.dv_BOOL(False))
+            self.execute_moveAbs.set_value(self.dv_BOOL(False))
+            self.execute_moveRel.set_value(self.dv_BOOL(False))
             time.sleep(0.5)
             self.execute_reset.set_value(self.dv_BOOL(False))
 
