@@ -1,10 +1,14 @@
+from gestion_db import *
+import time
+
 def mensajes_menuPrincipal():
     print("Escriba el número correspondiente a la operación que desea realizar y pulse RETURN \n")
     print("1) Encender motor ")
     print("2) Apagar motor ")
     print("3) Resetear ")
     print("4) Mover motor ")
-    print("5) Salir de la aplicación \n")
+    print("5) Visualiza base de datos ")
+    print("6) Salir de la aplicación \n")
 
 def mensajes_menuMotor():
     print("Seleccione modo de movimiento que desea para el motor: ")
@@ -13,47 +17,94 @@ def mensajes_menuMotor():
     print("3) Mover N grados")
     print("4) Volver al menú principal \n")
 
-def menu_motor(pou):
+def mensajes_menuUsuario():
+    print("Introduzca el número que corresponda con su situación y pulse RETURN \n")
+    print("1) Usuario nuevo")
+    print("2) Ya he utilizado esta máquina más veces \n")
+
+
+def mensajes_menuDB():
+    print("Introduzca el número correspondiente a la tabla que desea consultar y pulse RETURN \n")
+    print("1) Registro de movimientos")
+    print("2) Registro de usuarios \n")
+    
+
+def menu_motor(pou, con, uo):
     mensajes_menuMotor()
     seleccion = int(input())
+    
     while seleccion != 4:
+
         if seleccion == 1:
+            modo = 'Velocidad Constante'
             print("Por favor, introduzca velocidad a la que desea moverse en rpm: ")
             vel = int(input())
+            pos_inicial = pou.posicion_actual()
+            ts = time.gmtime()
+            timestamp = time.time() 
+            fecha_y_hora = time.strftime("%Y-%m-%d %H:%M:%S", ts)      
+
             pou.movimiento_cte(vel)
+
             print("Para parar el motor y volver a selección de modo pulse 0 y RETURN cuando lo desee.")
             opcion = int(input())
             if opcion == 0:
                 pou.parar()
+                pos_final = pou.posicion_actual()
                 pass                
             else:
                 print("Selección inválida, pulse 0 y RETURN para parar el motor")
+
+            insertaDB_velCte(con, timestamp, modo, uo, fecha_y_hora, vel, pos_inicial, pos_final)
+        
         elif seleccion == 2:
+            modo = 'Giro N vueltas'
             print("Por favor, introduzca velocidad a la que desea moverse en rpm: ")
             vel = int(input())
             print("Por favor, introduzca número de vueltas que desea moverse: ")
             vueltas = int(input())
+            pos_inicial = pou.posicion_actual()
+            timestamp = time.time()
+            ts = time.gmtime()
+            fecha_y_hora = time.strftime("%Y-%m-%d %H:%M:%S", ts)
+
             pou.movimiento_relativo(vueltas, vel, 0)
+
             print("Para parar el motor y volver a selección de modo pulse 0 y RETURN cuando lo desee.")
             opcion = int(input())
             if opcion == 0:
                 pou.parar()
+                pos_final = pou.posicion_actual()
                 pass
             else:
                 print("Selección inválida, pulse 0 y RETURN para parar el motor")
+
+            insertaDB_Nvueltas(con, timestamp, modo, uo, fecha_y_hora, vel, vueltas, pos_inicial, pos_final)
+
         elif seleccion == 3:
+            modo = 'Giro N grados'
             print("Por favor, introduzca velocidad a la que desea moverse en rpm: ")
             vel = int(input())
             print("Por favor, introduzca los grados que desea moverse desde la posición actual: " )
             grados = int(input())
+            pos_inicial = pou.posicion_actual()
+            timestamp = time.time()
+            ts = time.gmtime() 
+            fecha_y_hora = time.strftime("%Y-%m-%d %H:%M:%S", ts)
+
             pou.movimiento_relativo(grados, vel, 1)
+            
             print("Para parar el motor y volver a selección de modo pulse 0 y RETURN cuando lo desee.")
             opcion = int(input())
             if opcion == 0:
                 pou.parar()
+                pos_final = pou.posicion_actual()
                 pass
             else:
                 print("Selección inválida, pulse 0 y RETURN para parar el motor")
+
+            insertaDB_Ngrados(con, timestamp, modo, uo, fecha_y_hora, vel, grados, pos_inicial, pos_final)
+
         else:
             print("Selección inválida, escoja operación de nuevo. \n")    
 
@@ -61,11 +112,21 @@ def menu_motor(pou):
         seleccion = int(input())
 
 
-def menu_principal(pou):
+def menu_DB(con):
+    mensajes_menuDB()
+    which = int(input())
+    if (which == 1) or (which == 2):
+        visualizaDB(con, which)
+    else:
+        print("Selección inválida, escoja operación de nuevo. \n")
+    
+
+
+def menu_principal(pou, con, uo):
     mensajes_menuPrincipal()
     seleccion = int(input())
 
-    while seleccion != 5:
+    while seleccion != 6:
         if seleccion == 1:
             pou.encender()
         elif seleccion == 2:
@@ -73,7 +134,9 @@ def menu_principal(pou):
         elif seleccion == 3:
             pou.resetear()
         elif seleccion == 4:
-            menu_motor(pou)
+            menu_motor(pou, con, uo)
+        elif seleccion == 5:
+            menu_DB(con)
         else:
             print("Selección inválida, escoja operación de nuevo. \n")
 
@@ -81,3 +144,22 @@ def menu_principal(pou):
         seleccion = int(input("Seleccione operación a realizar: \n"))
 
     print("Ha decidido salir de la aplicación. Adiós! \n")
+
+
+def menu_usuario(con):
+    mensajes_menuUsuario()
+    seleccion = int(input())
+    uo = 0
+
+    if seleccion == 1:
+        uo = int(input("Introduzca su UO: "))
+        name = str(input("Introduzca su nombre: "))
+        apellidos = str(input("Introduzca sus apellidos: "))
+        edad = int(input("Introduzca su edad: "))
+        insertaDB_usuario(con, uo, name, apellidos, edad)
+    elif seleccion == 2:
+        uo = int(input("Introduzca su UO: "))
+    else:
+        print("Selección inválida, escoja de nuevo. \n")
+    
+    return uo
